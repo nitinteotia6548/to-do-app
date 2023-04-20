@@ -3,13 +3,11 @@ FROM node:19-alpine as build
 WORKDIR /app
 COPY package.json /app/package.json
 RUN yarn install
-COPY . /app
+COPY . .
 RUN yarn build
-COPY . /app
 
 ##RUN STAGE
-FROM node:19-alpine
-COPY --from=build /app/build .
-RUN yarn add serve
-EXPOSE 3000
-CMD ["serve","-s build"]
+FROM nginx:1.21.0-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
