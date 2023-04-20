@@ -51,6 +51,8 @@ resource "kubernetes_service" "to-do-app-service" {
     }
 
     type = "LoadBalancer"
+    load_balancer_source_ranges = ["3.7.0.0/16"]
+      
   }
   depends_on = [
     kubernetes_deployment.to-do-app-deployment
